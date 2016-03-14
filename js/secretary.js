@@ -6,6 +6,7 @@ var xmlContent;
 
 var objectInfirmiers= {};
 var objectPatients = [];
+var patientsNonAffectes = [];
 
 
 utils.XHR('GET', monXml).then( function (data){
@@ -54,6 +55,8 @@ console.log(objectInfirmiers['003']);
 	objectPatients.forEach(function(patient){
 		if (patient.infirmier != null){
 			objectInfirmiers[patient.infirmier].patients.push(patient); // on met dans le tableau de patient de l'infirmier l'object "patient" courant
+		} else {
+			patientsNonAffectes.push(patient);
 		}
 	});
 console.log(objectInfirmiers);
