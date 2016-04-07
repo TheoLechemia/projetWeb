@@ -1,0 +1,11 @@
+<h1>{{$ctrl.titre}}</h1>
+
+<table>
+	<tr ng-repeat="patient in $ctrl.data.objectPatients">
+		<td>
+			<patient data="patient"> {{patient.nom}}
+			{{patient.prenom}}</patient>
+		</td>
+	</tr>
+</table>
+

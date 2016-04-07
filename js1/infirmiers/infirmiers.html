@@ -1,0 +1,23 @@
+
+
+<!-- <table>
+	<tr ng-repeat="x in $ctrl.data.objectInfirmiers">
+		<td> {{x.nom }}</td>
+		<td> {{x.prenom }}</td>
+	<tr>
+<table> -->
+<md-button class="md-raised md-primary" ng-click="$ctrl.afficheItem('infirmier')">Afficher<br/>les infirmiers </md-button>
+
+<md-list flex ng-show="$ctrl.affichage=='infirmier'">
+
+		<md-list-item class ="md-3-line" ng-repeat="x in $ctrl.data.objectInfirmiers" ng-click="null">
+		<img ng-src="../{{x.photo}}" class="md-avatar" alt="{{x.nom}}" />
+			<div class="md-list-item-text" layout="column">
+		            <h3>{{x.nom }}</h3>
+		            <h4>{{ x.prenom }}</h4>
+			</div>
+		</md-list-item>
+</md-list>
+
+
+
