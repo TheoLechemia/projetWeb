@@ -1,11 +1,30 @@
-<h1>{{$ctrl.titre}}</h1>
+ <h1 class="titre">{{ $ctrl.titre }}</h1>
 
-<table>
-	<tr ng-repeat="patient in $ctrl.data.objectPatients">
-		<td>
-			<patient data="patient"> {{patient.nom}}
-			{{patient.prenom}}</patient>
-		</td>
-	</tr>
-</table>
+	<h2>Gestion des infirmiers</h2>
+  <section layout="row" flex>
 
+				 <md-sidenav
+			        class="md-sidenav-left"
+			        md-component-id="left"
+			        md-is-locked-open="$mdMedia('gt-md')"
+			        md-disable-backdrop
+			        md-whiteframe="4">
+
+						<div ng-repeat="inf in $ctrl.data.objectInfirmiers">
+							<infirmier ng-click="$ctrl.afficherPatient(inf)" data="inf"> </infirmier>
+						</div>
+
+				</md-sidenav>
+
+				<md-content flex layout-padding>
+
+
+						<div ng-repeat="patient in $ctrl.patientsCourant">
+								<patient data="patient"> </patient>
+
+						</div>
+				</md-content>
+
+
+
+</section>

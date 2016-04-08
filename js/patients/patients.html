@@ -1,0 +1,12 @@
+<md-list-item class="md-3-line">
+	<img src="../../images/ninja.png" class="md-avatar">
+	<div class="md-list-item-text">
+		  <h3>{{$ctrl.data.nom | uppercase}} {{$ctrl.data.prenom}}</h3>
+		   <h3>N°sécurité sociale:  {{$ctrl.data.id}}</h3>
+		   <div ng-repeat="adresse in $ctrl.data.adresse">
+		 	 <h3>Adresse: {{adresse.rue }} {{adresse.ville }}  {{adresse.codePostal }} </h3>
+		 	</div>
+
+	</div>
+	<md-divider md-inset ng-if="!$last"></md-divider>
+</md-list-item>

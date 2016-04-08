@@ -59785,15 +59785,35 @@
 
 	    var proxyNF = __webpack_require__( 18 )(moduleAngular);
 
-	    var controller = function(proxyNF) {
+	    var controller = function( proxyNF ) {
 
+	        // Message d'accueil
+	        console.log("Hey !! This is controller, man...j'essaye de te récupérer les données..." );
+
+	        // Récupérer les objets Cabinet, Infirmiers, Patients
 	        var ctrl = this;
-
-	        proxyNF.getData(this.src).then(function(cabinetJS) {
+	        proxyNF.getData(this.src).then( function(cabinetJS) {
 	            ctrl.data = cabinetJS;
-
+	            console.log(ctrl.data);
 	        });
-	    }
+
+	        ctrl.patientsCourant = null;
+
+	        ctrl.afficherPatient = function(inf){ // fonction d'afficher - désaficher les patients de l'infirmiers
+	            if (ctrl.patientsCourant === inf.patients){
+	                ctrl.patientsCourant  = null;
+	            } else {
+	             ctrl.patientsCourant = inf.patients; // renvoie un tableau de patients
+	              if (ctrl.patientsCourant.length == 0){
+	                        alert("Cet infirmier ne dispose d'aucun patient");
+	                     }
+	            }
+
+	        };
+
+
+	    };
+	    controller.$inject = ['proxyNF'];
 
 
 	    __webpack_require__(19)(moduleAngular);
@@ -59804,7 +59824,7 @@
 	    moduleAngular.component( "cabinetMedical", {
 	        'template'    : template,
 	        bindings    : {
-	            src: '@',
+	            src: "@",
 	            titre    : "@"
 	        },
 	        'controller'    : controller
@@ -59815,7 +59835,7 @@
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = "<h1>{{$ctrl.titre}}</h1>\n\n<table>\n\t<tr ng-repeat=\"patient in $ctrl.data.objectPatients\">\n\t\t<td>\n\t\t\t<patient data=\"patient\"> {{patient.nom}}\n\t\t\t{{patient.prenom}}</patient>\n\t\t</td>\n\t</tr>\n</table>\n\n"
+	module.exports = " <h1 class=\"titre\">{{ $ctrl.titre }}</h1>\n\n\t<h2>Gestion des infirmiers</h2>\n  <section layout=\"row\" flex>\n\n\t\t\t\t <md-sidenav\n\t\t\t        class=\"md-sidenav-left\"\n\t\t\t        md-component-id=\"left\"\n\t\t\t        md-is-locked-open=\"$mdMedia('gt-md')\"\n\t\t\t        md-disable-backdrop\n\t\t\t        md-whiteframe=\"4\">\n\n\t\t\t\t\t\t<div ng-repeat=\"inf in $ctrl.data.objectInfirmiers\">\n\t\t\t\t\t\t\t<infirmier ng-click=\"$ctrl.afficherPatient(inf)\" data=\"inf\"> </infirmier>\n\t\t\t\t\t\t</div>\n\n\t\t\t\t</md-sidenav>\n\n\t\t\t\t<md-content flex layout-padding>\n\n\n\t\t\t\t\t\t<div ng-repeat=\"patient in $ctrl.patientsCourant\">\n\t\t\t\t\t\t\t\t<patient data=\"patient\"> </patient>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t</md-content>\n\n\n\n</section>"
 
 /***/ },
 /* 16 */
@@ -59890,8 +59910,8 @@
 								ville: unPatient.querySelector("ville").textContent,
 								codePostal: unPatient.querySelector("codePostal").textContent
 							}],
-					infirmier: unPatient.querySelector("visite").getAttribute("intervenant") 
-					// renseigne sur l'ID de infirmier qui s'occupe du patient, 
+					infirmier: unPatient.querySelector("visite").getAttribute("intervenant")
+					// renseigne sur l'ID de infirmier qui s'occupe du patient,
 					// si null: le patient "n'appartient" à aucune infirmier: il n'a pas subi d'intervention !
 				})
 			});
@@ -59912,12 +59932,10 @@
 				objectInfirmiers: objectInfirmiers,
 				objectPatients: objectPatients,
 				objectCabinet: objectCabinet
-			};
-
-
 			}
 
-		//};
+		};
+
 	};
 	proxyNF.$inject = [ "$http" ]; //Injection de dépendances
 
@@ -59927,22 +59945,99 @@
 		moduleAngular.service(id, proxyNF);
 	};
 
+
+
+			// // Parser le XML
+			// var parser = new DOMParser();
+			// var doc    = parser.parseFromString(xmlContent , 'text/xml');
+
+			// // Récupération et construction du tableau d'objets "Cabinet"
+			// // l'indice du tableau est son nom
+			// var cabinet = Array.prototype.slice.apply(doc.querySelectorAll('cabinet'), []);
+			// cabinet.forEach( function(cab)	{
+			// 	objectCabinet[cab] = {
+			// 		nom : cab.querySelector( "cabinet>nom" ).textContent,
+			// 		adresse : {
+			// 			numero: 	cab.querySelector("cabinet>adresse>numero").textContent,
+			// 			rue: 		cab.querySelector("cabinet>adresse>rue").textContent,
+			// 			ville: 		cab.querySelector("cabinet>adresse>ville").textContent,
+			// 			codePostal: cab.querySelector("cabinet>adresse>codePostal").textContent
+			// 			}
+			// 	}
+			// });
+
+
+			// // Récupération et construction du tableau d'objets "Infirmiers"
+			// // l'indice du tableau est son n°id
+			// var infirmiers = Array.prototype.slice.apply(doc.querySelectorAll('infirmier'), []);
+			// infirmiers.forEach(function(unInfirmer) {
+			// 	objectInfirmiers[unInfirmer.getAttribute("id")] = {
+			// 		nom : 	unInfirmer.querySelector("nom").textContent,
+			// 		prenom: unInfirmer.querySelector("prenom").textContent,
+			// 		photo: 	unInfirmer.querySelector("photo").textContent,
+			// 		patients: [] // initialisation du tableau vide
+			// 	}
+			// });
+
+			// // Récupérer et construction du tableau d'objets "patient",
+			// // l'indice du tableau est le n° de securité sociale du patient
+			// var patients   = Array.prototype.slice.apply(doc.querySelectorAll('patient'), []);
+			// patients.forEach(function(unPatient){
+			// 	objectPatients[unPatient.querySelector("numero").textContent]= {
+			// 		nom: 	unPatient.querySelector("nom").textContent,
+			// 		prenom: unPatient.querySelector("prenom").textContent,
+			// 		sexe: 	unPatient.querySelector("sexe").textContent,
+			// 		date : 	unPatient.querySelector("naissance").textContent,
+			// 		adresse: [{
+			// 					rue: 	unPatient.querySelector("rue").textContent,
+			// 					ville: 	unPatient.querySelector("ville").textContent,
+			// 					codePostal: unPatient.querySelector("codePostal").textContent
+			// 				}],
+			// 		infirmier: unPatient.querySelector("visite").getAttribute("intervenant")
+			// 		// renseigne sur l'ID de infirmier qui s'occupe du patient,
+			// 		// si null: le patient "n'appartient" à aucune infirmier: il n'a pas subu d'intervention !
+			// 	}
+			// });
+
+			// // Remplir le tableau des patients pour chaque infirmier
+			// // le patient "courant" est ajouté
+
+			// objectPatients.forEach(function(patient){
+			// 	if (patient.infirmier != null){
+			// 		objectInfirmiers[patient.infirmier].patients.push(patient);
+			// 	}
+			// });
+
 /***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	        // Template HTML
+	// Template HTML
 	var template = __webpack_require__( 20 );
 	__webpack_require__( 21 );
 
 	// Définition du composant
-
 	module.exports = function(moduleAngular) {
 
+	    var proxyNF = __webpack_require__( 18 )(moduleAngular);
+
 	    var ctrlInfirmiers = function() {
-	            
-	        console.log(this.data);
-	    };
+	        var ctrl = this;
+
+	        ctrl.patientsCourant = null;
+
+	         ctrl.afficherPatient = function(inf){
+	            if (ctrl.patientsCourant === inf.patients){
+	                ctrl.patientsCourant  = null;
+	            } else {
+	             ctrl.patientsCourant = inf.patients; // renvoie un tableau de patients
+	              if (ctrl.patientsCourant.length == 0){
+	                        alert("Cet infirmier ne dispose d'aucun patient");
+	                     }
+	            }
+
+	        };
+	    }
 
 	    // Construire une balise <infirmier>
 	    moduleAngular.component( "infirmier", {
@@ -59950,7 +60045,7 @@
 	        bindings    : {
 	            titre   : "@",
 	            data    : "<",
-	            src : "@"
+	          //  displayPatient: '&'
 	        },
 	        'controller'    : ctrlInfirmiers
 	    });
@@ -59961,7 +60056,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = ""
+	module.exports = "\n<md-list-item class=\"md-3-line\" ng-click =\"null\" > \n\t<img ng-src=\"../../{{ $ctrl.data.photo }}\" class=\"md-avatar\" alt=\"{{$ctrl.data.nom}}\">\n\t<div class=\"md-list-item-text\">\n\t\t  <h3>{{$ctrl.data.nom | uppercase}} {{$ctrl.data.prenom}}</h3>\n\t\t  <h4>{{$ctrl.data.id}}</h4>\n\t\t  <p>Infirmier</p>\n\t\t  <p> Nombre de patient(s): {{$ctrl.data.patients.length}} </p>\n\t</div>\n\t<md-divider md-inset ng-if=\"!$last\"></md-divider>\n</md-list-item>\n\n\t<div ng-repeat=\"patient in $ctrl.patientsCourant\" ng-show=\"$ctrl.patientsCourant != null\">\n\t\t<patient data =\"patient\"> </patient>\n\t</div>\n\n\n"
 
 /***/ },
 /* 21 */
@@ -59984,14 +60079,14 @@
 	    var proxyNF = __webpack_require__( 18 )(moduleAngular);
 
 	    var ctrlpatients = function( ) {
-	        console.log("salut, je suis le controleur d'un patient");
-	        console.log(this.data);
+
 	    }
 
 	    // Construire une balise <infirmier>
 	    moduleAngular.component( "patient", {
 	        'template'    : template,
 	        bindings    : {
+	            titre    : "@",
 	            data: "<"
 	        },
 	        'controller'    : ctrlpatients
@@ -60003,7 +60098,7 @@
 /* 24 */
 /***/ function(module, exports) {
 
-	module.exports = ""
+	module.exports = "<md-list-item class=\"md-3-line\">\n\t<img src=\"../../images/ninja.png\" class=\"md-avatar\">\n\t<div class=\"md-list-item-text\">\n\t\t  <h3>{{$ctrl.data.nom | uppercase}} {{$ctrl.data.prenom}}</h3>\n\t\t   <h3>N°sécurité sociale:  {{$ctrl.data.id}}</h3>\n\t\t   <div ng-repeat=\"adresse in $ctrl.data.adresse\">\n\t\t \t <h3>Adresse: {{adresse.rue }} {{adresse.ville }}  {{adresse.codePostal }} </h3>\n\t\t \t</div>\n\n\t</div>\n\t<md-divider md-inset ng-if=\"!$last\"></md-divider>\n</md-list-item>"
 
 /***/ },
 /* 25 */
