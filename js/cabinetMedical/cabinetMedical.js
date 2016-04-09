@@ -19,6 +19,7 @@ module.exports = function(moduleAngular) {
             console.log(ctrl.data);
         });
 
+//----------- Afficher la liste des patients des infirmiers 
         ctrl.patientsCourant = null;
 
         ctrl.afficherPatient = function(inf){ // fonction d'afficher - désaficher les patients de l'infirmiers
@@ -33,6 +34,22 @@ module.exports = function(moduleAngular) {
 
         };
 
+// afficher le formulaire d'ajout d'un patient
+
+        ctrl.formulairePatient = false;
+        ctrl.afficherFormulaire = function(){
+            if (ctrl.formulairePatient == true){
+                ctrl.formulairePatient = false;
+            }else {
+                 ctrl.formulairePatient = true;
+
+            }
+            console.log(ctrl.formulairePatient);
+        }
+
+
+
+
 
     };
     controller.$inject = ['proxyNF'];
@@ -40,6 +57,7 @@ module.exports = function(moduleAngular) {
 
     require("../infirmiers/infirmiers.js")(moduleAngular);
     require("../patients/patients.js")(moduleAngular);
+    require("../formPatient/formPatient.js")(moduleAngular);
 
 
     // Construire une balise <cabinet-medical>
@@ -47,7 +65,7 @@ module.exports = function(moduleAngular) {
         'template'    : template,
         bindings    : {
             src: "@",
-            titre    : "@"
+            titre    : "@",
         },
         'controller'    : controller
     });

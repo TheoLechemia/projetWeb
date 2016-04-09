@@ -59797,6 +59797,7 @@
 	            console.log(ctrl.data);
 	        });
 
+	//----------- Afficher la liste des patients des infirmiers 
 	        ctrl.patientsCourant = null;
 
 	        ctrl.afficherPatient = function(inf){ // fonction d'afficher - désaficher les patients de l'infirmiers
@@ -59811,6 +59812,22 @@
 
 	        };
 
+	// afficher le formulaire d'ajout d'un patient
+
+	        ctrl.formulairePatient = false;
+	        ctrl.afficherFormulaire = function(){
+	            if (ctrl.formulairePatient == true){
+	                ctrl.formulairePatient = false;
+	            }else {
+	                 ctrl.formulairePatient = true;
+
+	            }
+	            console.log(ctrl.formulairePatient);
+	        }
+
+
+
+
 
 	    };
 	    controller.$inject = ['proxyNF'];
@@ -59818,6 +59835,7 @@
 
 	    __webpack_require__(19)(moduleAngular);
 	    __webpack_require__(23)(moduleAngular);
+	    __webpack_require__(27)(moduleAngular);
 
 
 	    // Construire une balise <cabinet-medical>
@@ -59825,7 +59843,7 @@
 	        'template'    : template,
 	        bindings    : {
 	            src: "@",
-	            titre    : "@"
+	            titre    : "@",
 	        },
 	        'controller'    : controller
 	    });
@@ -59835,7 +59853,7 @@
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = " <h1 class=\"titre\">{{ $ctrl.titre }}</h1>\n\n\t<h2>Gestion des infirmiers</h2>\n  <section layout=\"row\" flex>\n\n\t\t\t\t <md-sidenav\n\t\t\t        class=\"md-sidenav-left\"\n\t\t\t        md-component-id=\"left\"\n\t\t\t        md-is-locked-open=\"$mdMedia('gt-md')\"\n\t\t\t        md-disable-backdrop\n\t\t\t        md-whiteframe=\"4\">\n\n\t\t\t\t\t\t<div ng-repeat=\"inf in $ctrl.data.objectInfirmiers\">\n\t\t\t\t\t\t\t<infirmier ng-click=\"$ctrl.afficherPatient(inf)\" data=\"inf\"> </infirmier>\n\t\t\t\t\t\t</div>\n\n\t\t\t\t</md-sidenav>\n\n\t\t\t\t<md-content flex layout-padding>\n\n\n\t\t\t\t\t\t<div ng-repeat=\"patient in $ctrl.patientsCourant\">\n\t\t\t\t\t\t\t\t<patient data=\"patient\"> </patient>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t</md-content>\n\n\n\n</section>"
+	module.exports = " <h1 class=\"titre\">{{ $ctrl.titre }}</h1>\n\n\t<h2>Gestion des infirmiers</h2>\n  <section layout=\"row\" flex>\n\n\t\t\t\t <md-sidenav\n\t\t\t        class=\"md-sidenav-left\"\n\t\t\t        md-component-id=\"left\"\n\t\t\t        md-is-locked-open=\"$mdMedia('gt-md')\"\n\t\t\t        md-disable-backdrop\n\t\t\t        md-whiteframe=\"4\">\n\t\t\t        <md-toolbar>\n      \t\t\t\t  <h1 class=\"md-toolbar-tools\"> Liste des infimiers </h1>\n      \t\t\t\t\t</md-toolbar>\n\n\t\t\t\t\t\t<div ng-repeat=\"inf in $ctrl.data.objectInfirmiers\">\n\t\t\t\t\t\t\t<infirmier ng-click=\"$ctrl.afficherPatient(inf)\" data=\"inf\"> </infirmier>\n\t\t\t\t\t\t</div>\n\n\t\t\t\t</md-sidenav>\n\n\t\t\t\t<md-content flex layout-padding>\n\n\n\t\t\t\t\t\t<div ng-repeat=\"patient in $ctrl.patientsCourant\">\n\t\t\t\t\t\t\t\t<patient data=\"patient\"> </patient>\n\n\t\t\t\t\t\t</div>\n\t\t\t\t</md-content>\n\n\n</section>\n\n<section>\n     <md-button class=\"md-raised md-primary\" ng-click=\"$ctrl.afficherFormulaire()\">Ajouter un patient</md-button>\n\t\t<div ng-show=\"$ctrl.formulairePatient == true\">\n\t\t<form-patient src=\"../data/cabinetInfirmier.xml\"  > </form-patient>\n\t\t</div>\n</section>"
 
 /***/ },
 /* 16 */
@@ -59848,14 +59866,17 @@
 /* 18 */
 /***/ function(module, exports) {
 
-	var proxyNF = function($http){
-
+	var proxyNF = function($http, formPatient){
+		this.formPatient = formPatient;
 		// Message d'accueil
 		console.log("Hello ! this is proxy !");
 
 		this.getData = function(src) {
-			return $http.get(src).then( processData );
+			return $http.get(src).then(processData);
 		}
+
+		
+		
 
 		function processData(response){
 			var xmlContent = response.data;
@@ -59934,10 +59955,30 @@
 				objectCabinet: objectCabinet
 			}
 
+		}
+
+		//Ajouter des patients
+		this.addPatient = function(patient){
+			var src="../data/cabinetInfirmier.xml";
+
+			this.getData(src).then(function(cabinetJS){
+				var data = cabinetJS;
+
+			// ajout dans le tableau de patient
+				data.objectPatients.push(patient);
+			// ajout dans le tableau d'infirmier
+				data.objectInfirmiers.forEach(function(unInfirmier){
+					if (unInfirmier.id == patient.infirmierID){
+						unInfirmier.patients.push(patient)
+				}
+				})
+				console.log(data.objectPatients);
+			})
+
 		};
 
 	};
-	proxyNF.$inject = [ "$http" ]; //Injection de dépendances
+	proxyNF.$inject = ["$http"]; //Injection de dépendances
 
 
 	module.exports = function(moduleAngular) {
@@ -59947,66 +59988,6 @@
 
 
 
-			// // Parser le XML
-			// var parser = new DOMParser();
-			// var doc    = parser.parseFromString(xmlContent , 'text/xml');
-
-			// // Récupération et construction du tableau d'objets "Cabinet"
-			// // l'indice du tableau est son nom
-			// var cabinet = Array.prototype.slice.apply(doc.querySelectorAll('cabinet'), []);
-			// cabinet.forEach( function(cab)	{
-			// 	objectCabinet[cab] = {
-			// 		nom : cab.querySelector( "cabinet>nom" ).textContent,
-			// 		adresse : {
-			// 			numero: 	cab.querySelector("cabinet>adresse>numero").textContent,
-			// 			rue: 		cab.querySelector("cabinet>adresse>rue").textContent,
-			// 			ville: 		cab.querySelector("cabinet>adresse>ville").textContent,
-			// 			codePostal: cab.querySelector("cabinet>adresse>codePostal").textContent
-			// 			}
-			// 	}
-			// });
-
-
-			// // Récupération et construction du tableau d'objets "Infirmiers"
-			// // l'indice du tableau est son n°id
-			// var infirmiers = Array.prototype.slice.apply(doc.querySelectorAll('infirmier'), []);
-			// infirmiers.forEach(function(unInfirmer) {
-			// 	objectInfirmiers[unInfirmer.getAttribute("id")] = {
-			// 		nom : 	unInfirmer.querySelector("nom").textContent,
-			// 		prenom: unInfirmer.querySelector("prenom").textContent,
-			// 		photo: 	unInfirmer.querySelector("photo").textContent,
-			// 		patients: [] // initialisation du tableau vide
-			// 	}
-			// });
-
-			// // Récupérer et construction du tableau d'objets "patient",
-			// // l'indice du tableau est le n° de securité sociale du patient
-			// var patients   = Array.prototype.slice.apply(doc.querySelectorAll('patient'), []);
-			// patients.forEach(function(unPatient){
-			// 	objectPatients[unPatient.querySelector("numero").textContent]= {
-			// 		nom: 	unPatient.querySelector("nom").textContent,
-			// 		prenom: unPatient.querySelector("prenom").textContent,
-			// 		sexe: 	unPatient.querySelector("sexe").textContent,
-			// 		date : 	unPatient.querySelector("naissance").textContent,
-			// 		adresse: [{
-			// 					rue: 	unPatient.querySelector("rue").textContent,
-			// 					ville: 	unPatient.querySelector("ville").textContent,
-			// 					codePostal: unPatient.querySelector("codePostal").textContent
-			// 				}],
-			// 		infirmier: unPatient.querySelector("visite").getAttribute("intervenant")
-			// 		// renseigne sur l'ID de infirmier qui s'occupe du patient,
-			// 		// si null: le patient "n'appartient" à aucune infirmier: il n'a pas subu d'intervention !
-			// 	}
-			// });
-
-			// // Remplir le tableau des patients pour chaque infirmier
-			// // le patient "courant" est ajouté
-
-			// objectPatients.forEach(function(patient){
-			// 	if (patient.infirmier != null){
-			// 		objectInfirmiers[patient.infirmier].patients.push(patient);
-			// 	}
-			// });
 
 /***/ },
 /* 19 */
@@ -60037,6 +60018,8 @@
 	            }
 
 	        };
+
+
 	    }
 
 	    // Construire une balise <infirmier>
@@ -60044,7 +60027,7 @@
 	        'template'    : template,
 	        bindings    : {
 	            titre   : "@",
-	            data    : "<",
+	            data    : "<"
 	          //  displayPatient: '&'
 	        },
 	        'controller'    : ctrlInfirmiers
@@ -60078,7 +60061,8 @@
 
 	    var proxyNF = __webpack_require__( 18 )(moduleAngular);
 
-	    var ctrlpatients = function( ) {
+	    var ctrlpatients = function() {
+
 
 	    }
 
@@ -60105,6 +60089,67 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 26 */,
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var template = __webpack_require__( 28 );
+	// require( "./formPatient.css" );
+
+	// Définition du composant
+	module.exports = function(moduleAngular) {
+
+	    var proxyNF = __webpack_require__( 18 )(moduleAngular);
+
+
+		var ctrlFormPatient = function($http, proxyNF){
+			this.$http = $http;
+			this.proxyNF = proxyNF;
+
+			this.patient = {
+				id: "",
+				nom:"",
+				prenom : "",
+				sexe: "",
+				date: "",
+				adresse: [{
+							rue:"",
+							ville:"",
+							codePostal:""
+							}],
+				infirmier: ""
+			};
+			
+			this.submitPatient = function(){
+				console.log(this.patient);
+				this.proxyNF.addPatient(this.patient);
+				};
+		}
+
+
+
+
+	ctrlFormPatient.$inject = ['$http', 'proxyNF'];
+
+
+	   moduleAngular.component( "formPatient", {
+	        template    : template,
+	        bindings    : {
+	        			src: "@"
+	        },
+	        'controller'    : ctrlFormPatient
+	    });
+
+	};
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports = "<md-input-container>\n\t<label>Nom</label>\n\t<input ng-model=\"$ctrl.patient.nom\">\n</md-input-container>\n\n<md-input-container>\n\t<label>Prenom</label>\n\t<input ng-model=\"$ctrl.patient.prenom\">\n </md-input-container>\n\n<md-input-container>\n\t<label>sexe</label>\n\t<input ng-model=\"$ctrl.patient.sexe\">\n</md-input-container>\n\n <md-input-container>\n\t<label>Numéro de sécurité sociale</label>\n\t<input ng-model=\"$ctrl.patient.id\">\n </md-input-container>\n\n <md-input-container>\n\t<label>Date de naissance</label>\n\t<input ng-model=\"$ctrl.patient.date\">\n </md-input-container>\n\n<label> Adresse: </label>\n <md-input-container>\n\t<label> Rue</label>\n\t<input ng-model=\"$ctrl.patient.adresse.rue\">\n </md-input-container>\n\n  <md-input-container>\n\t<label>Ville</label>\n\t<input ng-model=\"$ctrl.patient.adresse.ville\">\n </md-input-container>\n\n  <md-input-container>\n\t<label>Code Postal</label>\n\t<input ng-model=\"$ctrl.patient.adresse.codePostal\">\n </md-input-container>\n\n <md-input-container>\n\t<label>Infirmié associé (ID)</label>\n\t<input ng-model=\"$ctrl.patient.infirmier\">\n</md-input-container>\n\n  <md-button class=\"md-raised md-primary\" ng-click=\"$ctrl.submitPatient()\">Ajouter</md-button>\n"
 
 /***/ }
 /******/ ]);

@@ -7,7 +7,8 @@ module.exports = function(moduleAngular) {
 
     var proxyNF = require( "../proxy.js" )(moduleAngular);
 
-    var ctrlpatients = function( ) {
+    var ctrlpatients = function() {
+
 
     }
 

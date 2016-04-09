@@ -1,0 +1,47 @@
+<md-input-container>
+	<label>Nom</label>
+	<input ng-model="$ctrl.patient.nom">
+</md-input-container>
+
+<md-input-container>
+	<label>Prenom</label>
+	<input ng-model="$ctrl.patient.prenom">
+ </md-input-container>
+
+<md-input-container>
+	<label>sexe</label>
+	<input ng-model="$ctrl.patient.sexe">
+</md-input-container>
+
+ <md-input-container>
+	<label>Numéro de sécurité sociale</label>
+	<input ng-model="$ctrl.patient.id">
+ </md-input-container>
+
+ <md-input-container>
+	<label>Date de naissance</label>
+	<input ng-model="$ctrl.patient.date">
+ </md-input-container>
+
+<label> Adresse: </label>
+ <md-input-container>
+	<label> Rue</label>
+	<input ng-model="$ctrl.patient.adresse.rue">
+ </md-input-container>
+
+  <md-input-container>
+	<label>Ville</label>
+	<input ng-model="$ctrl.patient.adresse.ville">
+ </md-input-container>
+
+  <md-input-container>
+	<label>Code Postal</label>
+	<input ng-model="$ctrl.patient.adresse.codePostal">
+ </md-input-container>
+
+ <md-input-container>
+	<label>Infirmié associé (ID)</label>
+	<input ng-model="$ctrl.patient.infirmier">
+</md-input-container>
+
+  <md-button class="md-raised md-primary" ng-click="$ctrl.submitPatient()">Ajouter</md-button>

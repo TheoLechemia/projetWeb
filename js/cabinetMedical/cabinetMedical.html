@@ -9,6 +9,9 @@
 			        md-is-locked-open="$mdMedia('gt-md')"
 			        md-disable-backdrop
 			        md-whiteframe="4">
+			        <md-toolbar>
+      				  <h1 class="md-toolbar-tools"> Liste des infimiers </h1>
+      					</md-toolbar>
 
 						<div ng-repeat="inf in $ctrl.data.objectInfirmiers">
 							<infirmier ng-click="$ctrl.afficherPatient(inf)" data="inf"> </infirmier>
@@ -26,5 +29,11 @@
 				</md-content>
 
 
+</section>
 
+<section>
+     <md-button class="md-raised md-primary" ng-click="$ctrl.afficherFormulaire()">Ajouter un patient</md-button>
+		<div ng-show="$ctrl.formulairePatient == true">
+		<form-patient src="../data/cabinetInfirmier.xml"  > </form-patient>
+		</div>
 </section>

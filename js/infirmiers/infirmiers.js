@@ -23,6 +23,8 @@ module.exports = function(moduleAngular) {
             }
 
         };
+
+
     }
 
     // Construire une balise <infirmier>
@@ -30,7 +32,7 @@ module.exports = function(moduleAngular) {
         'template'    : template,
         bindings    : {
             titre   : "@",
-            data    : "<",
+            data    : "<"
           //  displayPatient: '&'
         },
         'controller'    : ctrlInfirmiers
