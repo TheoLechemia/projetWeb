@@ -1,5 +1,4 @@
-var proxyNF = function($http, formPatient){
-	this.formPatient = formPatient;
+var proxyNF = function($http){
 	// Message d'accueil
 	console.log("Hello ! this is proxy !");
 
@@ -90,26 +89,70 @@ var proxyNF = function($http, formPatient){
 	}
 
 	//Ajouter des patients
-	this.addPatient = function(patient){
-		var src="../data/cabinetInfirmier.xml";
+	 this.ajouterPatient = function(patient){
 
-		this.getData(src).then(function(cabinetJS){
-			var data = cabinetJS;
+         return $http({
+            method: 'POST',
+            url : "/addPatient",
+            data: patient
+            //headers: { "Content-Type": 'application/x-www-form-urlencoded' }
 
-		// ajout dans le tableau de patient
-			data.objectPatients.push(patient);
-		// ajout dans le tableau d'infirmier
-			data.objectInfirmiers.forEach(function(unInfirmier){
-				if (unInfirmier.id == patient.infirmierID){
-					unInfirmier.patients.push(patient)
-			}
-			})
-			console.log(data.objectPatients);
-		})
+            })
+         .then(
+            function(response) {
+                console.log(response);
+                console.log(response.message);
+                console.log("patient ajouté");
+            },
+            function(response){
+                console.log("erreur");
+            })
+     };
 
-	};
+     this.affecterPatient= function(numPatient, numNurse){
+     	return $http({
+            method: 'POST',
+            url : '/affectation',
+            data: {
+            	patient: numPatient,
+            	infirmier: numNurse
+            }
+            //headers: { "Content-Type": 'application/x-www-form-urlencoded' }
+
+            })
+         .then(
+            function(response) {
+                console.log(response);
+                console.log(response.message);
+                console.log("Sa la mi");
+            },
+            function(response){
+                console.log("erreur");
+            })
+     };
+ 
+	// this.addPatient = function(patient){
+	// 	    var src="../data/cabinetInfirmier.xml";
+
+	// 	this.getData(src).then(function(cabinetJS){
+	// 		var data = cabinetJS;
+
+	// 	// ajout dans le tableau de patient
+	// 		data.objectPatients.push(patient);
+	// 	// ajout dans le tableau d'infirmier
+	// 		data.objectInfirmiers.forEach(function(unInfirmier){
+	// 			if (unInfirmier.id == patient.infirmierID){
+	// 				unInfirmier.patients.push(patient)
+	// 		}
+	// 		})
+	// 		console.log(data.objectPatients);
+	// 	})
+	// };
+
+
 
 };
+
 proxyNF.$inject = ["$http"]; //Injection de dépendances
 
 
@@ -117,5 +160,3 @@ module.exports = function(moduleAngular) {
 	var id = "proxyNF";
 	moduleAngular.service(id, proxyNF);
 };
-
-

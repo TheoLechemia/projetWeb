@@ -1,47 +1,53 @@
-<md-input-container>
-	<label>Nom</label>
-	<input ng-model="$ctrl.patient.nom">
-</md-input-container>
 
-<md-input-container>
-	<label>Prenom</label>
-	<input ng-model="$ctrl.patient.prenom">
- </md-input-container>
+	<md-input-container>
+		<label>Nom</label>
+		<input id="patientName" ng-model="$ctrl.patient.patientName">
+	</md-input-container>
 
-<md-input-container>
-	<label>sexe</label>
-	<input ng-model="$ctrl.patient.sexe">
-</md-input-container>
+	<md-input-container>
+		<label>Prenom</label>
+		<input id="patientForname" ng-model="$ctrl.patient.patientForname">
+	 </md-input-container>
 
- <md-input-container>
-	<label>Numéro de sécurité sociale</label>
-	<input ng-model="$ctrl.patient.id">
- </md-input-container>
+	<md-input-container>
+		<label>sexe</label>
+		<input id="patientSex" ng-model="$ctrl.patient.patientSex">
+	</md-input-container>
 
- <md-input-container>
-	<label>Date de naissance</label>
-	<input ng-model="$ctrl.patient.date">
- </md-input-container>
+	 <md-input-container>
+		<label>Numéro de sécurité sociale</label>
+		<input input="patientNumber" ng-model="$ctrl.patient.patientNumber">
+	 </md-input-container>
 
-<label> Adresse: </label>
- <md-input-container>
-	<label> Rue</label>
-	<input ng-model="$ctrl.patient.adresse.rue">
- </md-input-container>
+	 <md-input-container>
+		<label>Date de naissance</label>
+		<input input="patientBirthDay"ng-model="$ctrl.patient.patientBirthday">
+	 </md-input-container>
 
-  <md-input-container>
-	<label>Ville</label>
-	<input ng-model="$ctrl.patient.adresse.ville">
- </md-input-container>
+	<label> Adresse: </label>
+	 <md-input-container>
+		<label> Rue</label>
+		<input id="patientStreet" ng-model="$ctrl.patient.patientStreet">
+	 </md-input-container>
 
-  <md-input-container>
-	<label>Code Postal</label>
-	<input ng-model="$ctrl.patient.adresse.codePostal">
- </md-input-container>
+	  <md-input-container>
+		<label>Ville</label>
+		<input id = "patientCity" ng-model="$ctrl.patient.patientCity">
+	 </md-input-container>
 
- <md-input-container>
-	<label>Infirmié associé (ID)</label>
-	<input ng-model="$ctrl.patient.infirmier">
-</md-input-container>
+	  <md-input-container>
+		<label>Code Postal</label>
+		<input id="patientPostalCode" ng-model="$ctrl.patient.postalCode">
+	 </md-input-container>
 
-  <md-button class="md-raised md-primary" ng-click="$ctrl.submitPatient()">Ajouter</md-button>
+	 <md-input-container>
+		<label>Numéro de l'infirmier</label>
+		<input id="patientPostalCode" ng-model="$ctrl.patient.nurseNumber">
+	 </md-input-container>
+
+
+
+	  <md-button  class="md-raised md-primary" id="btAddPatient" ng-click="$ctrl.submitPatient()">Ajouter </md-button>
+
+
+

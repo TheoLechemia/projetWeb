@@ -1,8 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cabinet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		 xmlns="http://www.ujf-grenoble.fr/l3miage/cabinet" 
-		 xsi:schemaLocation="http://www.ujf-grenoble.fr/l3miage/cabinet ../schema/cabinet.xsd"
-		 >
+<?xml version="1.0" encoding="UTF-8"?><cabinet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ujf-grenoble.fr/l3miage/cabinet" xsi:schemaLocation="http://www.ujf-grenoble.fr/l3miage/cabinet ../schema/cabinet.xsd">
 	<nom>Soins à Grenoble</nom>
 	<adresse>
 		<numero>60</numero>
@@ -153,5 +149,5 @@
 			</visite>
 
 		</patient>
-	</patients>
+	<patient><nom></nom><prenom></prenom><numero></numero><sexe></sexe><naissance></naissance><visite date="2014-12-08"/><adresse><etage></etage><numero></numero><rue></rue><ville></ville><codePostal></codePostal></adresse></patient><patient><nom>oui</nom><prenom>i</prenom><numero>i</numero><sexe>i</sexe><naissance>i</naissance><visite date="2014-12-08"/><adresse><etage></etage><numero></numero><rue>i</rue><ville>i</ville><codePostal></codePostal></adresse></patient><patient><nom>jean</nom><prenom>bon</prenom><numero>11919191</numero><sexe>M</sexe><naissance>oui</naissance><visite date="2014-12-08"/><adresse><etage></etage><numero></numero><rue>oi</rue><ville>i</ville><codePostal></codePostal></adresse></patient><patient><nom>Julio</nom><prenom>Prayer</prenom><numero>191919191</numero><sexe>M</sexe><naissance>09/01/1990</naissance><visite date="2014-12-08" intervenant="001"/><adresse><etage></etage><numero></numero><rue>rue de la loutre</rue><ville>On sais pas trop</ville><codePostal></codePostal></adresse></patient></patients>
 </cabinet>

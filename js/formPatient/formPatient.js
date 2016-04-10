@@ -7,29 +7,27 @@ module.exports = function(moduleAngular) {
     var proxyNF = require( "../proxy.js" )(moduleAngular);
 
 
-	var ctrlFormPatient = function($http, proxyNF){
-		this.$http = $http;
-		this.proxyNF = proxyNF;
+	var ctrlFormPatient = function($http , proxyNF){
 
-		this.patient = {
-			id: "",
-			nom:"",
-			prenom : "",
-			sexe: "",
-			date: "",
-			adresse: [{
-						rue:"",
-						ville:"",
-						codePostal:""
-						}],
-			infirmier: ""
-		};
-		
-		this.submitPatient = function(){
-			console.log(this.patient);
-			this.proxyNF.addPatient(this.patient);
-			};
-	}
+		 this.patient = {
+            patientNumber: "",
+            patientName:"",
+            patientForname : "",
+            patientSex: "",
+            patientBirthday: "",
+            patientFloor:"",
+            patientStreet: "",
+            postalCode:"",
+            patientCity: "",
+            nurseNumber:""
+        };
+        
+        this.submitPatient = function(){
+            console.log(this.patient);
+            proxyNF.ajouterPatient(this.patient);
+            proxyNF.affecterPatient(this.patient.patientNumber, this.patient.nurseNumber)
+            };
+	 }
 
 
 

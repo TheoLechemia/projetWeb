@@ -154,7 +154,7 @@ function init(port, applicationServerIP, applicationServerPort) {
 				 req.body.patientStreet		= req.body.patientStreet	|| '';
 				 req.body.patientPostalCode	= req.body.patientPostalCode|| '';
 				 req.body.patientCity		= req.body.patientCity		|| '';
-				 
+
 				 var patients = doc.getElementsByTagName('patients')[0];
 				 // Is it a new patient or not ?
 				 var newPatient = getPatient(doc, req.body.patientNumber);

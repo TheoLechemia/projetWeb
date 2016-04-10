@@ -7,7 +7,7 @@ module.exports = function(moduleAngular) {
 
     var proxyNF = require( "../proxy.js" )(moduleAngular);
 
-    var controller = function( proxyNF ) {
+    var controller = function(proxyNF, $http) {
 
         // Message d'accueil
         console.log("Hey !! This is controller, man...j'essaye de te récupérer les données..." );
@@ -16,8 +16,10 @@ module.exports = function(moduleAngular) {
         var ctrl = this;
         proxyNF.getData(this.src).then( function(cabinetJS) {
             ctrl.data = cabinetJS;
-            console.log(ctrl.data);
+           console.log(ctrl.data);
         });
+
+
 
 //----------- Afficher la liste des patients des infirmiers 
         ctrl.patientsCourant = null;
@@ -38,6 +40,7 @@ module.exports = function(moduleAngular) {
 
         ctrl.formulairePatient = false;
         ctrl.afficherFormulaire = function(){
+
             if (ctrl.formulairePatient == true){
                 ctrl.formulairePatient = false;
             }else {
@@ -45,14 +48,16 @@ module.exports = function(moduleAngular) {
 
             }
             console.log(ctrl.formulairePatient);
-        }
+        };
+
+       
+
+       
+
+};
 
 
-
-
-
-    };
-    controller.$inject = ['proxyNF'];
+    controller.$inject = ['proxyNF', '$http'];
 
 
     require("../infirmiers/infirmiers.js")(moduleAngular);
@@ -65,7 +70,7 @@ module.exports = function(moduleAngular) {
         'template'    : template,
         bindings    : {
             src: "@",
-            titre    : "@",
+            titre    : "@"
         },
         'controller'    : controller
     });
